@@ -65,11 +65,12 @@
   <ItemGroup>
     <Build Include="dbo\Tables\EventLogs.sql" />
     <Build Include="dbo\Views\MachineMetadata.sql" />
-    <Build Include="dbo\Views\MessageCount.sql" />
-    <Build Include="dbo\Views\MachineCount.sql" />
+    <Build Include="dbo\Views\GlobalMessageCounts.sql" />
+    <Build Include="dbo\Views\GlobalMachineCounts.sql" />
     <Build Include="dbo\Views\EventLogsClean.sql" />
-    <Build Include="dbo\Views\GlobalCounts.sql" />
-    <Build Include="dbo\Views\RegionalCounts.sql" />
+    <Build Include="dbo\Views\GlobalTotals.sql" />
+    <Build Include="dbo\Views\RegionalMessageCounts.sql" />
     <Build Include="dbo\Views\RegionalTotals.sql" />
+    <Build Include="dbo\Views\RegionalMachineCounts.sql" />
   </ItemGroup>
 </Project>

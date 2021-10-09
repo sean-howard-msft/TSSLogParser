@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace TSSLogParser.EFCore
 {
-    public partial class MachineCount
+    public partial class GlobalMachineCount
     {
         public string LogName { get; set; }
         public string ProviderName { get; set; }
         public string TruncatedMessage { get; set; }
-        public int? MachineCount1 { get; set; }
+        public int? MachineCount { get; set; }
     }
 }

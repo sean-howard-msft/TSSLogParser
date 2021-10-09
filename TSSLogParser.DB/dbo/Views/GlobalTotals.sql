@@ -1,6 +1,6 @@
 ﻿
 
-CREATE VIEW [dbo].[GlobalCounts]
+CREATE VIEW [dbo].[GlobalTotals]
 AS
 SELECT 
 	msgCnt.LogName, 
@@ -8,8 +8,8 @@ SELECT
 	msgCnt.TruncatedMessage, 
 	machCnt.MachineCount, 
 	SUM(msgCnt.MessageCount) AS MessageCount
-FROM MessageCount AS msgCnt 
-	INNER JOIN MachineCount AS machCnt 
+FROM GlobalMessageCounts AS msgCnt 
+	INNER JOIN GlobalMachineCounts AS machCnt 
 		ON msgCnt.LogName = machCnt.LogName 
 		AND msgCnt.ProviderName = machCnt.ProviderName 
 		AND msgCnt.TruncatedMessage = machCnt.TruncatedMessage 
@@ -19,8 +19,3 @@ GROUP BY
 	msgCnt.ProviderName, 
 	msgCnt.TruncatedMessage, 
 	machCnt.MachineCount
---ORDER BY 
---	msgCnt.LogName, 
---	msgCnt.ProviderName, 
---	machCnt.MachineCount DESC, 
---	msgCnt.TruncatedMessage

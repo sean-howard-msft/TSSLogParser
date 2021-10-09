@@ -18,7 +18,6 @@ namespace TSSLogParser
             {
                 Excel.Application xlsApp;
                 Excel.Workbook xlsWorkbook;
-                Excel.Worksheet xlsWorksheet;
                 object misValue = System.Reflection.Missing.Value;
 
                 // Remove the old excel report file
@@ -44,7 +43,13 @@ namespace TSSLogParser
 
                     foreach (DataTable table in dataSet.Tables)
                     {
-                        xlsWorksheet = (Excel.Worksheet)xlsWorkbook.Sheets[dataSet.Tables.IndexOf(table) + 1];
+                        Excel.Worksheet xlsWorksheet;
+                        int wsIndex = dataSet.Tables.IndexOf(table) + 1;
+                        if (wsIndex == 1)
+                            xlsWorksheet = (Excel.Worksheet)xlsWorkbook.Sheets[wsIndex];
+                        else
+                            xlsWorksheet = (Excel.Worksheet)xlsWorkbook.Sheets.Add(misValue, xlsWorkbook.Sheets[wsIndex - 1], misValue, misValue);
+
                         xlsWorksheet.Name = table.TableName;
 
                         if (table.Rows.Count > 0)
@@ -59,14 +64,14 @@ namespace TSSLogParser
                         {
                             foreach (DataColumn column in table.Columns)
                             {
-                                xlsWorksheet.Cells[table.Rows.IndexOf(row) + 1, table.Columns.IndexOf(column) + 1] = row[column];
+                                xlsWorksheet.Cells[table.Rows.IndexOf(row) + 2, table.Columns.IndexOf(column) + 1] = row[column];
                             }
                         }
 
-                        Excel.Range range = xlsWorksheet.get_Range("A1", ExcelColumnFromNumber(table.Columns.Count) + (table.Rows.Count).ToString());
+                        Excel.Range range = xlsWorksheet.get_Range("A1", ExcelColumnFromNumber(table.Columns.Count) + table.Rows.Count.ToString());
                         range.Columns.AutoFit();
 
-                        ReleaseObject(xlsWorksheet);
+                        //ReleaseObject(xlsWorksheet);
                     }
 
                     xlsWorkbook.SaveAs(fileName, Excel.XlFileFormat.xlWorkbookDefault, misValue, misValue, misValue, misValue,

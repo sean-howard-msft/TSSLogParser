@@ -1,5 +1,5 @@
 ﻿
-CREATE VIEW [dbo].[MachineCount]
+CREATE VIEW [dbo].[GlobalMachineCounts]
 AS
 SELECT 
 	LogName, 

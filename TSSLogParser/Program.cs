@@ -87,8 +87,55 @@ namespace TSSLogParser
 
                 using (var db = new TSSParserContext(Configuration["TSSLogParser:ConnectionString"]))
                 {
+                    var metadata = db.MachineMetadata
+                        .GroupBy(mm => new { mm.CountryCode, mm.Region })
+                        .Select(mm => mm.Key)
+                        .ToList();
+                    foreach (var data in metadata)
+                    {
+                        DataSet regionalDataSet = new DataSet();
+
+                        var regionalTotals = db.RegionalTotals
+                            .Where(rc => rc.CountryCode == rc.CountryCode
+                                      && rc.Region == data.Region)
+                            .OrderBy(gc => gc.LogName)
+                            .ThenBy(gc => gc.ProviderName)
+                            .ThenByDescending(gc => gc.MessageCount)
+                            .ToDataTable();
+                        regionalDataSet.Tables.Add(regionalTotals);
+
+                        var regionalData = db.RegionalMessageCounts
+                            .Where(rc => rc.CountryCode == rc.CountryCode
+                                      && rc.Region == data.Region)
+                            .ToList();
+                        var machineList = regionalData
+                            .Select(rd => rd.MachineName)
+                            .Distinct();
+                        foreach (var machineName in machineList)
+                        {
+                            var regionalCounts = regionalData
+                                .Where(rd => rd.MachineName == machineName)
+                                .OrderBy(gc => gc.LogName)
+                                .ThenBy(gc => gc.ProviderName)
+                                .ThenByDescending(gc => gc.MessageCount)
+                                .ToDataTable();
+                            regionalCounts.TableName = machineName;
+                            regionalDataSet.Tables.Add(regionalCounts);
+                        }
+
+                        string fileNameRegional = $"{savePath}\\{data.CountryCode}{data.Region}.xlsx";
+                        ExcelHelper.CreateWorkbook(fileNameRegional, "Regional Reports", regionalDataSet);
+                        new Process
+                        {
+                            StartInfo = new ProcessStartInfo(fileNameRegional)
+                            {
+                                UseShellExecute = true
+                            }
+                        }.Start();
+                    }
+
                     DataSet globalDataSet = new DataSet();
-                    var globalCounts = db.GlobalCounts
+                    var globalCounts = db.GlobalTotals
                         .OrderBy(gc => gc.LogName)
                         .ThenBy(gc => gc.ProviderName)
                         .ThenByDescending(gc => gc.MachineCount)

@@ -5,20 +5,22 @@ SELECT
 	msgCnt.LogName, 
 	msgCnt.ProviderName, 
 	msgCnt.TruncatedMessage,
-	machData.CountryCode,
-	machData.Region,
+	machCnt.CountryCode,
+	machCnt.Region,
+	machCnt.MachineCount, 
 	SUM(msgCnt.MessageCount) AS MessageCount
-FROM MessageCount AS msgCnt 
-	INNER JOIN MachineMetadata AS machData 
-		ON machData.MachineName = msgCnt.MachineName
+FROM RegionalMessageCounts AS msgCnt 
+	INNER JOIN RegionalMachineCounts AS machCnt 
+		ON msgCnt.LogName = machCnt.LogName 
+		AND msgCnt.ProviderName = machCnt.ProviderName 
+		AND msgCnt.TruncatedMessage = machCnt.TruncatedMessage 
+		AND msgCnt.CountryCode = machCnt.CountryCode
+		AND msgCnt.Region = machCnt.Region
 WHERE (msgCnt.MessageCount > 1)
 GROUP BY 
 	msgCnt.LogName, 
 	msgCnt.ProviderName, 
 	msgCnt.TruncatedMessage,
-	machData.CountryCode,
-	machData.Region
---ORDER BY 
---	msgCnt.LogName, 
---	msgCnt.ProviderName, 
---	msgCnt.TruncatedMessage
+	machCnt.CountryCode,
+	machCnt.Region,
+	machCnt.MachineCount

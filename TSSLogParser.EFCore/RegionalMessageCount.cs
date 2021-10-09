@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace TSSLogParser.EFCore
 {
-    public partial class RegionalCount
+    public partial class RegionalMessageCount
     {
         public string LogName { get; set; }
         public string ProviderName { get; set; }

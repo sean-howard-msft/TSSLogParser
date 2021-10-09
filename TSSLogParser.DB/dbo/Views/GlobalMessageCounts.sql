@@ -1,16 +1,14 @@
 ﻿
-CREATE VIEW [dbo].[MessageCount]
+CREATE VIEW [dbo].[GlobalMessageCounts]
 AS
 SELECT 
 	LogName, 
 	ProviderName, 
-	TruncatedMessage, 
-	MachineName, 
+	TruncatedMessage,
 	COUNT(*) AS MessageCount
 FROM EventLogsClean
 GROUP BY 
 	LogName, 
-	ProviderName, 
-	MachineName, 
+	ProviderName,
 	TruncatedMessage
 HAVING (COUNT(*) > 1)
