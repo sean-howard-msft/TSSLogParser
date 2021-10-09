@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TSSLogParser": {
+      "commandName": "Project",
+      "commandLineArgs": "report -d \"C:\\Users\\cshoward\\Documents\\CaseBuddy.CaseData\\2108100040003867_Anish\""
+    }
+  }
+}

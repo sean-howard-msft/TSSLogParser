@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31717.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSSLogParser", "TSSLogParser\TSSLogParser.csproj", "{0B3FC27F-9D6C-46BC-987C-A8C897A50D9A}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "TSSLogParser.DB", "TSSLogParser.DB\TSSLogParser.DB.sqlproj", "{672786FC-A06C-495B-AE8D-81CF071A78D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSSLogParser.EFCore", "TSSLogParser.EFCore\TSSLogParser.EFCore.csproj", "{8967B9DB-A262-4C03-9DAA-708D6615B7EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B3FC27F-9D6C-46BC-987C-A8C897A50D9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B3FC27F-9D6C-46BC-987C-A8C897A50D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B3FC27F-9D6C-46BC-987C-A8C897A50D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B3FC27F-9D6C-46BC-987C-A8C897A50D9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{672786FC-A06C-495B-AE8D-81CF071A78D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{672786FC-A06C-495B-AE8D-81CF071A78D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{672786FC-A06C-495B-AE8D-81CF071A78D4}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{672786FC-A06C-495B-AE8D-81CF071A78D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{672786FC-A06C-495B-AE8D-81CF071A78D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{672786FC-A06C-495B-AE8D-81CF071A78D4}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8967B9DB-A262-4C03-9DAA-708D6615B7EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8967B9DB-A262-4C03-9DAA-708D6615B7EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8967B9DB-A262-4C03-9DAA-708D6615B7EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8967B9DB-A262-4C03-9DAA-708D6615B7EA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4863C773-40A4-4E56-BBB9-5F6D3FB19BB8}
+	EndGlobalSection
+EndGlobal

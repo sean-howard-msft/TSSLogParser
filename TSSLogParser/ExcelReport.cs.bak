@@ -1,0 +1,127 @@
+﻿using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Diagnostics;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Threading;
+using Excel = Microsoft.Office.Interop.Excel;
+
+namespace TSSLogParser
+{
+    public class ExcelHelper
+    {
+        public static void CreateWorkbook(string fileName, string reportDescription, DataTable table)
+        {
+            using(new ExcelUILanguageHelper())
+            {
+                Excel.Application xlsApp;
+                Excel.Workbook xlsWorkbook;
+                Excel.Worksheet xlsWorksheet;
+                object misValue = System.Reflection.Missing.Value;
+
+                // Remove the old excel report file
+                try
+                {
+                    FileInfo oldFile = new FileInfo(fileName);
+                    if(oldFile.Exists)
+                    {
+                        File.SetAttributes(oldFile.FullName, FileAttributes.Normal);
+                        oldFile.Delete();
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.Error.WriteLine($"Error removing old Excel report: {ex.Message}");
+                    return;
+                }
+
+                try
+                {
+                    xlsApp = new Excel.Application();
+                    xlsWorkbook = xlsApp.Workbooks.Add(misValue);
+                    xlsWorksheet = (Excel.Worksheet)xlsWorkbook.Sheets[1];
+
+                    // Create the header for Excel file
+                    xlsWorksheet.Cells[1, 1] = reportDescription;
+                    Excel.Range range = xlsWorksheet.get_Range("A1", "E1");
+                    range.Merge(1);
+                    range.Borders.Color = Color.Black.ToArgb();
+                    range.Interior.Color = Color.Yellow.ToArgb();
+
+                    int i = 3;
+                    if(table.Rows.Count > 0)
+                    {
+                        foreach (DataColumn column in table.Columns)
+                        {
+                            xlsWorksheet.Cells[i, table.Columns.IndexOf(column) + 1] = column.ColumnName;
+                        }
+                        ++i;
+                    }
+
+                    foreach (DataRow row in table.Rows)
+                    {
+                        foreach (DataColumn column in table.Columns)
+                        {
+                            xlsWorksheet.Cells[table.Rows.IndexOf(row) + i, table.Columns.IndexOf(column) + 1] = row[column];
+                        }
+                        ++i;
+                    }
+
+                    range = xlsWorksheet.get_Range("A2", "I" + (i + 2).ToString());
+                    range.Columns.AutoFit();
+
+                    xlsWorkbook.SaveAs(fileName, Excel.XlFileFormat.xlWorkbookDefault, misValue, misValue, misValue, misValue,
+                        Excel.XlSaveAsAccessMode.xlExclusive, Excel.XlSaveConflictResolution.xlLocalSessionChanges, misValue, misValue, misValue, misValue);
+                    xlsWorkbook.Close(true, misValue, misValue);
+                    xlsApp.Quit();
+
+                    ReleaseObject(xlsWorksheet);
+                    ReleaseObject(xlsWorkbook);
+                    ReleaseObject(xlsApp);
+
+                    Process.Start(fileName);
+                }
+                catch(Exception ex)
+                {
+                    Console.Error.WriteLine("Error creating Excel report: " + ex.Message);
+                }
+            }
+        }
+
+        static private void ReleaseObject(object obj)
+        {
+            try
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(obj);
+                obj = null;
+            }
+            catch(Exception ex)
+            {
+                obj = null;
+                Console.Error.WriteLine("Exception occured while releasing object " + ex.ToString());
+            }
+            finally
+            {
+                GC.Collect();
+            }
+        }
+    }
+
+    class ExcelUILanguageHelper : IDisposable
+    {
+        private CultureInfo m_CurrentCulture;
+
+        public ExcelUILanguageHelper()
+        {
+            // save current culture and set culture to en-US
+            m_CurrentCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+        }
+
+        // return to normal culture
+        public void Dispose() => Thread.CurrentThread.CurrentCulture = m_CurrentCulture;
+    }
+
+}
