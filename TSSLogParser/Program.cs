@@ -87,38 +87,15 @@ namespace TSSLogParser
 
                 using (var db = new TSSParserContext(Configuration["TSSLogParser:ConnectionString"]))
                 {
-                    var metadata = db.MachineMetadata.ToList();
-                    foreach (var data in metadata)
-                    {
-                        DataSet regionalDataSet = new DataSet();
-
-                        var regionalCounts = db.RegionalCounts
-                            .Where(rc => rc.CountryCode == rc.CountryCode 
-                                      && rc.Region == data.Region)
-                            .OrderBy(gc => gc.LogName)
-                            .ThenBy(gc => gc.ProviderName)
-                            .ThenByDescending(gc => gc.MessageCount)
-                            .ToDataTable();
-                        regionalDataSet.Tables.Add(regionalCounts);
-
-                        var machineCounts = db.MachineCounts
-                            .Where(mc => mc. == mc.CountryCode
-                                      && mc.Region == data.Region)
-                            .OrderBy(gc => gc.LogName)
-                            .ThenBy(gc => gc.ProviderName)
-                            .ThenByDescending(gc => gc.MessageCount)
-                            .ToDataTable(); ;
-
-                        ExcelHelper.CreateWorkbook($"{savePath}\\{data.CountryCode}{data.Region}.xlsx", "Global Reports", regionalDataSet);
-                    }
-
+                    DataSet globalDataSet = new DataSet();
                     var globalCounts = db.GlobalCounts
                         .OrderBy(gc => gc.LogName)
                         .ThenBy(gc => gc.ProviderName)
                         .ThenByDescending(gc => gc.MachineCount)
                         .ToDataTable();
                     string fileNameGlobal = $"{savePath}\\GlobalReport.xlsx";
-                    ExcelHelper.CreateWorkbook(fileNameGlobal, "Global Reports", globalCounts);
+                    globalDataSet.Tables.Add(globalCounts);
+                    ExcelHelper.CreateWorkbook(fileNameGlobal, "Global Reports", globalDataSet);
                     new Process
                     {
                         StartInfo = new ProcessStartInfo(fileNameGlobal)
