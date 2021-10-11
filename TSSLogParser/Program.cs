@@ -13,6 +13,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Management.Automation;
+using System.Management.Automation.Runspaces;
+using System.Text;
 using TSSLogParser.EFCore;
 
 namespace TSSLogParser
@@ -52,7 +54,7 @@ namespace TSSLogParser
             .AddUserSecrets<Program>()
             .Build();
 
-            // CreateDbIfNotExists();
+            CreateDbIfNotExists();
 
             Parser.Default.ParseArguments<ParseTSSOptions, OutputReportsOptions>(args)
               .MapResult(
@@ -65,7 +67,7 @@ namespace TSSLogParser
         {
             try
             {
-                using (var db = new TSSParserContext())
+                using (var db = new TSSParserContext(Configuration["TSSLogParser:ConnectionString"]))
                 {
                     db.Database.EnsureCreated();
                 }
@@ -202,94 +204,116 @@ namespace TSSLogParser
                             entries.ToList().ForEach(e => Console.WriteLine(e));
                         }
 
+                        var script = File.ReadAllText("AppLogs.ps1");
                         foreach (var entry in entries)
                         {
                             string destinationFileName = $"{unzipFolder}\\{entry.Name}";
-                            string csvPath = $"app_data\\{Path.GetFileNameWithoutExtension(destinationFileName)}.csv";
+                            string csvPath = Path.Combine(
+                                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), 
+                                "app_data", 
+                                $"{Path.GetFileNameWithoutExtension(destinationFileName)}.csv");
                             try
                             {
                                 // Extract the logs to a folder, use PS to parse, export to CSV
                                 entry.ExtractToFile(destinationFileName, true);
                                 using (var powerShellInstance = PowerShell.Create())
                                 {
-                                    string script = "Get-WinEvent" +
-                                                    $" -Path \"{destinationFileName}\" " +
-                                                    $" -FilterXPath \"*[System[(Level=2 or Level=3)]]\" |" +
-                                                    $" select RecordId,MachineName,LogName,ProviderName,TimeCreated,LevelDisplayName,Level,ID,Message,ContainerLog | " +
-                                                    $" Export-Csv \"{csvPath}\" -NoTypeInformation";
-                                    if (opts.Verbose) Console.WriteLine($"PS Script for {destinationFileName}: {script}");
-                                    powerShellInstance.AddScript(script);
-                                    Collection<PSObject> PSOutput = powerShellInstance.Invoke();
-                                }
-
-                                // Load CSV to DataTable
-                                DataTable csvData = new DataTable();
-                                using (TextFieldParser csvReader = new TextFieldParser(csvPath))
-                                {
-                                    csvReader.SetDelimiters(new string[] { "," });
-                                    csvReader.HasFieldsEnclosedInQuotes = true;
-                                    string[] colFields = csvReader.ReadFields();
-                                    if (colFields != null)
+                                    Collection<PSObject> results = powerShellInstance
+                                        .AddScript(script)
+                                        .AddParameters(new Dictionary<string, string>
+                                        {
+                                            { "eventLog" , destinationFileName},
+                                            { "exportCSV", csvPath}
+                                        })
+                                        .Invoke();
+                                    Collection<ErrorRecord> errors = powerShellInstance.Streams.Error.ReadAll();
+                                    StringBuilder sb = new StringBuilder();
+                                    if (errors.Count > 0)
                                     {
-                                        foreach (string column in colFields)
+                                        foreach (ErrorRecord error in errors)
                                         {
-                                            DataColumn datacolumn = new DataColumn(column)
-                                            {
-                                                Unique = column == "RecordId",
-                                                AllowDBNull = true
-                                            };
-                                            csvData.Columns.Add(datacolumn);
-                                        }
-                                        while (!csvReader.EndOfData)
-                                        {
-                                            try
-                                            {
-                                                string[] fieldData = csvReader.ReadFields();
-                                                //Making empty value as null
-                                                for (int i = 0; i < fieldData.Length; i++)
-                                                {
-                                                    if (fieldData[i] == "")
-                                                    {
-                                                        fieldData[i] = null;
-                                                    }
-                                                }
-                                                csvData.Rows.Add(fieldData);
-                                            }
-                                            catch (Exception)
-                                            {
-                                                // Silently Deduplicate
-                                            }
+                                            Console.Error.WriteLine($"{entry.Name}: {error}");
                                         }
                                     }
-                                }
-
-                                if (csvData.Rows.Count > 0)
-                                {
-                                    try
+                                    else
                                     {
-                                        // Load DataTable to SQL DB using bulkcopy
-                                        using (SqlConnection dbConnection = new SqlConnection(Configuration["TSSLogParser:ConnectionString"]))
+                                        foreach (PSObject result in results)
                                         {
-                                            dbConnection.Open();
-                                            using (SqlBulkCopy s = new SqlBulkCopy(dbConnection))
-                                            {
-                                                s.DestinationTableName = "EventLogs";
-
-                                                foreach (var column in csvData.Columns)
-                                                    s.ColumnMappings.Add(column.ToString(), column.ToString());
-
-                                                s.WriteToServer(csvData);
-                                            }
+                                            Console.WriteLine(result.ToString());
                                         }
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Console.Error.WriteLine(ex.Message);
                                     }
                                 }
 
                                 if (File.Exists(csvPath))
+                                {
+                                    // Load CSV to DataTable
+                                    DataTable csvData = new DataTable();
+                                    using (TextFieldParser csvReader = new TextFieldParser(csvPath))
+                                    {
+                                        csvReader.SetDelimiters(new string[] { "," });
+                                        csvReader.HasFieldsEnclosedInQuotes = true;
+                                        string[] colFields = csvReader.ReadFields();
+                                        if (colFields != null)
+                                        {
+                                            foreach (string column in colFields)
+                                            {
+                                                DataColumn datacolumn = new DataColumn(column)
+                                                {
+                                                    Unique = column == "RecordId",
+                                                    AllowDBNull = true
+                                                };
+                                                csvData.Columns.Add(datacolumn);
+                                            }
+                                            while (!csvReader.EndOfData)
+                                            {
+                                                try
+                                                {
+                                                    string[] fieldData = csvReader.ReadFields();
+                                                    //Making empty value as null
+                                                    for (int i = 0; i < fieldData.Length; i++)
+                                                    {
+                                                        if (fieldData[i] == "")
+                                                        {
+                                                            fieldData[i] = null;
+                                                        }
+                                                    }
+                                                    csvData.Rows.Add(fieldData);
+                                                }
+                                                catch (Exception)
+                                                {
+                                                    // Silently Deduplicate
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (csvData.Rows.Count > 0)
+                                    {
+                                        try
+                                        {
+                                            // Load DataTable to SQL DB using bulkcopy
+                                            using (SqlConnection dbConnection = new SqlConnection(Configuration["TSSLogParser:ConnectionString"]))
+                                            {
+                                                dbConnection.Open();
+                                                using (SqlBulkCopy s = new SqlBulkCopy(dbConnection))
+                                                {
+                                                    s.DestinationTableName = "EventLogs";
+
+                                                    foreach (var column in csvData.Columns)
+                                                        s.ColumnMappings.Add(column.ToString(), column.ToString());
+
+                                                    s.WriteToServer(csvData);
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.Error.WriteLine(ex.Message);
+                                        }
+                                    }
+
                                     File.Delete(csvPath);
+                                }
                             }
                             catch (Exception ex)
                             {
