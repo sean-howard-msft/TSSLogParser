@@ -4,7 +4,8 @@ AS
 SELECT 
 	el.LogName, 
 	el.ProviderName, 
-	el.TruncatedMessage,
+	el.TruncatedMessage, 
+	el.LevelDisplayName,
 	machData.MachineName,
 	machData.CountryCode,
 	machData.Region,
@@ -20,7 +21,8 @@ FROM EventLogsClean el
 GROUP BY 
 	el.LogName, 
 	el.ProviderName,
-	el.TruncatedMessage,
+	el.TruncatedMessage, 
+	el.LevelDisplayName,
 	machData.MachineName,
 	machData.CountryCode,
 	machData.Region,

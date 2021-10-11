@@ -4,7 +4,8 @@ AS
 SELECT 
 	msgCnt.LogName, 
 	msgCnt.ProviderName, 
-	msgCnt.TruncatedMessage,
+	msgCnt.TruncatedMessage, 
+	msgCnt.LevelDisplayName,
 	machCnt.CountryCode,
 	machCnt.Region,
 	machCnt.MachineCount, 
@@ -20,7 +21,8 @@ WHERE (msgCnt.MessageCount > 1)
 GROUP BY 
 	msgCnt.LogName, 
 	msgCnt.ProviderName, 
-	msgCnt.TruncatedMessage,
+	msgCnt.TruncatedMessage, 
+	msgCnt.LevelDisplayName,
 	machCnt.CountryCode,
 	machCnt.Region,
 	machCnt.MachineCount

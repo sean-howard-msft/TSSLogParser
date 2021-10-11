@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace TSSLogParser.EFCore
+namespace TSSLogParser
 {
     public partial class GlobalTotal
     {
@@ -11,6 +11,7 @@ namespace TSSLogParser.EFCore
         public string ProviderName { get; set; }
         public string TruncatedMessage { get; set; }
         public int? MachineCount { get; set; }
+        public string LevelDisplayName { get; set; }
         public int? MessageCount { get; set; }
     }
 }

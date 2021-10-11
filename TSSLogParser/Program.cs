@@ -123,6 +123,13 @@ namespace TSSLogParser
                             regionalDataSet.Tables.Add(regionalCounts);
                         }
 
+                        //var regionalEvents = db.EventLogsFreshes
+                        //    .Where(rc => rc.CountryCode == rc.CountryCode
+                        //              && rc.Region == data.Region)
+                        //    .ToDataTable();
+                        //regionalEvents.TableName = "Raw Events";
+                        //regionalDataSet.Tables.Add(regionalEvents);
+
                         string fileNameRegional = $"{savePath}\\{data.CountryCode}{data.Region}.xlsx";
                         ExcelHelper.CreateWorkbook(fileNameRegional, "Regional Reports", regionalDataSet);
                         new Process

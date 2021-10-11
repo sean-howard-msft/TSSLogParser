@@ -11,7 +11,10 @@ SELECT
 	ProviderName, 
 	[Message], 
 	ContainerLog, 
-	LEFT([Message], CHARINDEX('.', [Message])) AS TruncatedMessage
+	LEFT([Message], 
+		IIF(CHARINDEX('.', [Message]) >= 50, 
+			CHARINDEX('.', [Message]), 50)
+		) AS TruncatedMessage
 FROM  dbo.EventLogs
 WHERE ([Message] IS NOT NULL) AND 
 	  ([Message] <> '')

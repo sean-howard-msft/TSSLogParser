@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace TSSLogParser.EFCore
+namespace TSSLogParser
 {
     public partial class EventLog
     {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -9,18 +8,11 @@ namespace TSSLogParser.EFCore
 {
     public partial class TSSParserContext : DbContext
     {
-        private string connectionString;
-
+        
         public TSSParserContext()
         {
 
         }
-
-        public TSSParserContext(string ConnectionString)
-        {
-            connectionString = ConnectionString;
-        }
-
         public TSSParserContext(DbContextOptions<TSSParserContext> options)
             : base(options)
         {
@@ -29,6 +21,7 @@ namespace TSSLogParser.EFCore
 
         public virtual DbSet<EventLog> EventLogs { get; set; }
         public virtual DbSet<EventLogsClean> EventLogsCleans { get; set; }
+        public virtual DbSet<EventLogsFresh> EventLogsFreshes { get; set; }
         public virtual DbSet<GlobalMachineCount> GlobalMachineCounts { get; set; }
         public virtual DbSet<GlobalMessageCount> GlobalMessageCounts { get; set; }
         public virtual DbSet<GlobalTotal> GlobalTotals { get; set; }
@@ -36,14 +29,6 @@ namespace TSSLogParser.EFCore
         public virtual DbSet<RegionalMachineCount> RegionalMachineCounts { get; set; }
         public virtual DbSet<RegionalMessageCount> RegionalMessageCounts { get; set; }
         public virtual DbSet<RegionalTotal> RegionalTotals { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(connectionString, options => options.CommandTimeout(600));
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -91,6 +76,43 @@ namespace TSSLogParser.EFCore
                 entity.Property(e => e.ProviderName).HasMaxLength(255);
             });
 
+            modelBuilder.Entity<EventLogsFresh>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("EventLogsFresh");
+
+                entity.Property(e => e.AppCode).HasMaxLength(3);
+
+                entity.Property(e => e.ContainerLog)
+                    .IsRequired()
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.CountryCode).HasMaxLength(2);
+
+                entity.Property(e => e.Domain).HasMaxLength(50);
+
+                entity.Property(e => e.InfraCode).HasMaxLength(2);
+
+                entity.Property(e => e.InstanceNum).HasMaxLength(2);
+
+                entity.Property(e => e.LevelDisplayName).HasMaxLength(255);
+
+                entity.Property(e => e.LogName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.MachineName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.MachineType).HasMaxLength(3);
+
+                entity.Property(e => e.ProviderName).HasMaxLength(255);
+
+                entity.Property(e => e.Region).HasMaxLength(3);
+            });
+
             modelBuilder.Entity<GlobalMachineCount>(entity =>
             {
                 entity.HasNoKey();
@@ -110,6 +132,8 @@ namespace TSSLogParser.EFCore
 
                 entity.ToView("GlobalMessageCounts");
 
+                entity.Property(e => e.LevelDisplayName).HasMaxLength(255);
+
                 entity.Property(e => e.LogName)
                     .IsRequired()
                     .HasMaxLength(100);
@@ -122,6 +146,8 @@ namespace TSSLogParser.EFCore
                 entity.HasNoKey();
 
                 entity.ToView("GlobalTotals");
+
+                entity.Property(e => e.LevelDisplayName).HasMaxLength(255);
 
                 entity.Property(e => e.LogName)
                     .IsRequired()
@@ -188,6 +214,8 @@ namespace TSSLogParser.EFCore
 
                 entity.Property(e => e.InstanceNum).HasMaxLength(2);
 
+                entity.Property(e => e.LevelDisplayName).HasMaxLength(255);
+
                 entity.Property(e => e.LogName)
                     .IsRequired()
                     .HasMaxLength(100);
@@ -210,6 +238,8 @@ namespace TSSLogParser.EFCore
                 entity.ToView("RegionalTotals");
 
                 entity.Property(e => e.CountryCode).HasMaxLength(2);
+
+                entity.Property(e => e.LevelDisplayName).HasMaxLength(255);
 
                 entity.Property(e => e.LogName)
                     .IsRequired()

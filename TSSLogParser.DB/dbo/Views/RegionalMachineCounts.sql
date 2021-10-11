@@ -12,7 +12,7 @@ FROM  (
 	SELECT DISTINCT 
 		el.LogName, 
 		el.ProviderName, 
-		el.TruncatedMessage, 
+		el.TruncatedMessage,
 		machData.MachineName,
 		machData.CountryCode,
 		machData.Region

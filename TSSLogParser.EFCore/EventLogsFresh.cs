@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace TSSLogParser
 {
-    public partial class EventLogsClean
+    public partial class EventLogsFresh
     {
         public int RecordId { get; set; }
         public string MachineName { get; set; }
@@ -18,5 +18,12 @@ namespace TSSLogParser
         public string Message { get; set; }
         public string ContainerLog { get; set; }
         public string TruncatedMessage { get; set; }
+        public string CountryCode { get; set; }
+        public string Region { get; set; }
+        public string MachineType { get; set; }
+        public string AppCode { get; set; }
+        public string InfraCode { get; set; }
+        public string InstanceNum { get; set; }
+        public string Domain { get; set; }
     }
 }

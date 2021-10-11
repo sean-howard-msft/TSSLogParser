@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Threading;

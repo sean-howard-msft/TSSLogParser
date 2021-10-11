@@ -5,10 +5,12 @@ SELECT
 	LogName, 
 	ProviderName, 
 	TruncatedMessage,
+	LevelDisplayName,
 	COUNT(*) AS MessageCount
 FROM EventLogsClean
 GROUP BY 
 	LogName, 
 	ProviderName,
-	TruncatedMessage
+	TruncatedMessage,
+	LevelDisplayName
 HAVING (COUNT(*) > 1)

@@ -72,5 +72,6 @@
     <Build Include="dbo\Views\RegionalMessageCounts.sql" />
     <Build Include="dbo\Views\RegionalTotals.sql" />
     <Build Include="dbo\Views\RegionalMachineCounts.sql" />
+    <Build Include="dbo\Views\EventLogsFresh.sql" />
   </ItemGroup>
 </Project>

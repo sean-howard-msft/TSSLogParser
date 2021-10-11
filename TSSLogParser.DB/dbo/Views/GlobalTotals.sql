@@ -7,6 +7,7 @@ SELECT
 	msgCnt.ProviderName, 
 	msgCnt.TruncatedMessage, 
 	machCnt.MachineCount, 
+	msgCnt.LevelDisplayName,
 	SUM(msgCnt.MessageCount) AS MessageCount
 FROM GlobalMessageCounts AS msgCnt 
 	INNER JOIN GlobalMachineCounts AS machCnt 
@@ -18,4 +19,5 @@ GROUP BY
 	msgCnt.LogName, 
 	msgCnt.ProviderName, 
 	msgCnt.TruncatedMessage, 
-	machCnt.MachineCount
+	machCnt.MachineCount, 
+	msgCnt.LevelDisplayName
