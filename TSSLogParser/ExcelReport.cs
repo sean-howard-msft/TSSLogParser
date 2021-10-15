@@ -29,7 +29,7 @@ namespace TSSLogParser
                 }
                 catch(Exception ex)
                 {
-                    Console.Error.WriteLine($"Error removing old Excel report: {ex.Message}");
+                    Console.Error.WriteLine($"Error removing old Excel report: {ex}");
                     return;
                 }
 
@@ -81,7 +81,7 @@ namespace TSSLogParser
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine("Error creating Excel report: " + ex.Message);
+                    Console.Error.WriteLine("Error creating Excel report: " + ex.ToString());
                 }
             }
         }

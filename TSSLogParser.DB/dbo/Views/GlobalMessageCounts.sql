@@ -4,8 +4,13 @@ AS
 SELECT 
 	LogName, 
 	ProviderName, 
-	TruncatedMessage,
 	LevelDisplayName,
+	TruncatedMessage,	
+	MAX([Message]) FullMessage,
+	MAX(MsftDocsSearch) MsftDocsSearch, 
+	MAX(MsftDocsTopResult) MsftDocsTopResult, 
+	MAX(WebSearch) WebSearch, 
+	MAX(WebTopResult) WebTopResult,
 	COUNT(*) AS MessageCount
 FROM EventLogsClean
 GROUP BY 
@@ -13,4 +18,3 @@ GROUP BY
 	ProviderName,
 	TruncatedMessage,
 	LevelDisplayName
-HAVING (COUNT(*) > 1)

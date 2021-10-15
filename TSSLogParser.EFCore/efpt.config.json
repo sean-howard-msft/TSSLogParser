@@ -1,0 +1,81 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "TSSParserContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": null,
+   "OutputPath": null,
+   "ProjectRootNamespace": "TSSLogParser.EFCore",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[EventLogs]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EventLogsClean]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[EventLogsFresh]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[GlobalMachineCounts]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[GlobalMessageCounts]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[GlobalTotals]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[MachineMetadata]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Recommendations]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[RegionalMachineCounts]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[RegionalMessageCounts]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[RegionalTotals]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[RecommendationImport]",
+         "ObjectType": 1
+      }
+   ],
+   "UiHint": "howard.TSSParser.dbo",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": true,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoDefaultConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSchemaFolders": false,
+   "UseSpatial": false
+}

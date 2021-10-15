@@ -1,4 +1,5 @@
 ﻿
+
 CREATE VIEW [dbo].[RegionalMachineCounts]
 AS
 SELECT 
@@ -6,23 +7,24 @@ SELECT
 	ProviderName, 
 	TruncatedMessage,
 	CountryCode,
-	Region, 
+	Region,
+	InfraCode, 
 	COUNT(*) AS MachineCount
 FROM  (
 	SELECT DISTINCT 
-		el.LogName, 
-		el.ProviderName, 
-		el.TruncatedMessage,
-		machData.MachineName,
-		machData.CountryCode,
-		machData.Region
-    FROM EventLogsClean el
-		JOIN MachineMetaData machData
-			ON el.MachineName = machData.MachineName
+		LogName, 
+		ProviderName, 
+		TruncatedMessage,
+		MachineName,
+		CountryCode,
+		Region,
+		InfraCode
+    FROM [EventLogsFresh]
 	) AS el
 GROUP BY 
 	LogName, 
 	ProviderName, 
 	TruncatedMessage,
 	CountryCode,
-	Region
+	Region,
+	InfraCode

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[EventLogs] (
+CREATE TABLE [dbo].[EventLogs] (
     [RecordId]         INT            NOT NULL,
     [MachineName]      NVARCHAR (50)  NOT NULL,
     [LogName]          NVARCHAR (100) NOT NULL,
@@ -9,12 +9,24 @@
     [ProviderName]     NVARCHAR (255) NULL,
     [Message]          NVARCHAR (MAX) NULL,
     [ContainerLog]     NVARCHAR (255) NOT NULL,
+    [MsftDocsSearch] [nvarchar](max) NULL,
+	[MsftDocsTopResult] [nvarchar](255) NULL,
+	[WebSearch] [nvarchar](max) NULL,
+	[WebTopResult] [nvarchar](255) NULL,
     CONSTRAINT [PK_EventLogs] PRIMARY KEY CLUSTERED ([RecordId] ASC, [MachineName] ASC, [LogName] ASC)
 );
 
 
+
+
+
+
 GO
-CREATE NONCLUSTERED INDEX [idx_EventLogs_LogName_ProviderName_i_Message]
-    ON [dbo].[EventLogs]([LogName] ASC, [ProviderName] ASC)
-    INCLUDE([Message]);
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [idx_EventLogs_MachineName_All]
+    ON [dbo].[EventLogs]([MachineName] ASC)
+    INCLUDE([TimeCreated], [LevelDisplayName], [Level], [Id], [ProviderName], [Message], [ContainerLog]);
 

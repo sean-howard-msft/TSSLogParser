@@ -6,18 +6,17 @@ using System.Collections.Generic;
 
 namespace TSSLogParser.EFCore
 {
-    public partial class GlobalTotal
+    public partial class Recommendation
     {
         public string LogName { get; set; }
         public string ProviderName { get; set; }
         public string LevelDisplayName { get; set; }
-        public string TruncatedMessage { get; set; }
-        public int? MachineCount { get; set; }
         public int? MessageCount { get; set; }
         public string FullMessage { get; set; }
         public string MsftDocsSearch { get; set; }
         public string MsftDocsTopResult { get; set; }
         public string WebSearch { get; set; }
         public string WebTopResult { get; set; }
+        public string Machines { get; set; }
     }
 }

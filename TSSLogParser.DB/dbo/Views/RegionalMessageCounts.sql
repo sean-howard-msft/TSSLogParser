@@ -2,33 +2,35 @@
 AS 
 
 SELECT 
-	el.LogName, 
-	el.ProviderName, 
-	el.TruncatedMessage, 
-	el.LevelDisplayName,
-	machData.MachineName,
-	machData.CountryCode,
-	machData.Region,
-	machData.MachineType,
-	machData.AppCode,
-	machData.InfraCode,
-	machData.InstanceNum,
-	machData.Domain,
+	LogName, 
+	ProviderName, 
+	LevelDisplayName,
+	MachineName,
+	TruncatedMessage,
+	MAX([Message]) FullMessage, 
+	MAX(MsftDocsSearch) MsftDocsSearch, 
+	MAX(MsftDocsTopResult) MsftDocsTopResult, 
+	MAX(WebSearch) WebSearch, 
+	MAX(WebTopResult) WebTopResult,
+	CountryCode,
+	Region,
+	MachineType,
+	AppCode,
+	InfraCode,
+	InstanceNum,
+	Domain,
 	COUNT(*) AS MessageCount
-FROM EventLogsClean el
-	INNER JOIN MachineMetadata AS machData 
-		ON machData.MachineName = el.MachineName
+FROM EventLogsFresh
 GROUP BY 
-	el.LogName, 
-	el.ProviderName,
-	el.TruncatedMessage, 
-	el.LevelDisplayName,
-	machData.MachineName,
-	machData.CountryCode,
-	machData.Region,
-	machData.MachineType,
-	machData.AppCode,
-	machData.InfraCode,
-	machData.InstanceNum,
-	machData.Domain
-HAVING (COUNT(*) > 1)
+	LogName, 
+	ProviderName, 
+	TruncatedMessage, 
+	LevelDisplayName,
+	MachineName,
+	CountryCode,
+	Region,
+	MachineType,
+	AppCode,
+	InfraCode,
+	InstanceNum,
+	Domain

@@ -5,19 +5,28 @@ AS
 SELECT 
 	msgCnt.LogName, 
 	msgCnt.ProviderName, 
+	msgCnt.LevelDisplayName, 
 	msgCnt.TruncatedMessage, 
-	machCnt.MachineCount, 
-	msgCnt.LevelDisplayName,
-	SUM(msgCnt.MessageCount) AS MessageCount
+	machCnt.MachineCount,
+	SUM(msgCnt.MessageCount) AS MessageCount,
+	msgCnt.FullMessage,
+	msgCnt.MsftDocsSearch,
+    msgCnt.MsftDocsTopResult,
+    msgCnt.WebSearch,
+    msgCnt.WebTopResult
 FROM GlobalMessageCounts AS msgCnt 
 	INNER JOIN GlobalMachineCounts AS machCnt 
 		ON msgCnt.LogName = machCnt.LogName 
 		AND msgCnt.ProviderName = machCnt.ProviderName 
 		AND msgCnt.TruncatedMessage = machCnt.TruncatedMessage 
-WHERE (machCnt.MachineCount > 1)
 GROUP BY 
 	msgCnt.LogName, 
 	msgCnt.ProviderName, 
 	msgCnt.TruncatedMessage, 
 	machCnt.MachineCount, 
-	msgCnt.LevelDisplayName
+	msgCnt.FullMessage,
+	msgCnt.LevelDisplayName,
+	msgCnt.MsftDocsSearch,
+    msgCnt.MsftDocsTopResult,
+    msgCnt.WebSearch,
+    msgCnt.WebTopResult
