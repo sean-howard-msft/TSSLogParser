@@ -18,31 +18,75 @@ namespace TSSLogParser.EFCore
         {
         }
 
+        public virtual DbSet<Datum> Data { get; set; }
+        public virtual DbSet<Event> Events { get; set; }
+        public virtual DbSet<EventDatum> EventData { get; set; }
         public virtual DbSet<EventLog> EventLogs { get; set; }
         public virtual DbSet<EventLogsClean> EventLogsCleans { get; set; }
         public virtual DbSet<EventLogsFresh> EventLogsFreshes { get; set; }
+        public virtual DbSet<FlatEvent> FlatEvents { get; set; }
         public virtual DbSet<GlobalMachineCount> GlobalMachineCounts { get; set; }
         public virtual DbSet<GlobalMessageCount> GlobalMessageCounts { get; set; }
         public virtual DbSet<GlobalTotal> GlobalTotals { get; set; }
         public virtual DbSet<MachineMetadatum> MachineMetadata { get; set; }
+        public virtual DbSet<Provider> Providers { get; set; }
         public virtual DbSet<Recommendation> Recommendations { get; set; }
         public virtual DbSet<RegionalMachineCount> RegionalMachineCounts { get; set; }
         public virtual DbSet<RegionalMessageCount> RegionalMessageCounts { get; set; }
         public virtual DbSet<RegionalTotal> RegionalTotals { get; set; }
+        public virtual DbSet<System> Systems { get; set; }
+        public virtual DbSet<TimeCreated> TimeCreateds { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
+            modelBuilder.Entity<Datum>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.EventDataId)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("EventData_Id");
+
+                entity.Property(e => e.EventId)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("Event_Id");
+            });
+
+            modelBuilder.Entity<Event>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("Event");
+
+                entity.Property(e => e.EventId)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("Event_Id");
+            });
+
+            modelBuilder.Entity<EventDatum>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.EventDataId)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("EventData_Id");
+
+                entity.Property(e => e.EventId)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("Event_Id");
+            });
+
             modelBuilder.Entity<EventLog>(entity =>
             {
                 entity.HasKey(e => new { e.RecordId, e.MachineName, e.LogName });
 
-                entity.HasIndex(e => e.MachineName, "idx_EventLogs_MachineName_All");
-
                 entity.Property(e => e.MachineName).HasMaxLength(50);
 
                 entity.Property(e => e.LogName).HasMaxLength(100);
+
+                entity.Property(e => e.AppService).HasMaxLength(255);
 
                 entity.Property(e => e.ContainerLog)
                     .IsRequired()
@@ -62,6 +106,8 @@ namespace TSSLogParser.EFCore
                 entity.HasNoKey();
 
                 entity.ToView("EventLogsClean");
+
+                entity.Property(e => e.AppService).HasMaxLength(255);
 
                 entity.Property(e => e.ContainerLog)
                     .IsRequired()
@@ -91,6 +137,8 @@ namespace TSSLogParser.EFCore
                 entity.ToView("EventLogsFresh");
 
                 entity.Property(e => e.AppCode).HasMaxLength(3);
+
+                entity.Property(e => e.AppService).HasMaxLength(255);
 
                 entity.Property(e => e.ContainerLog)
                     .IsRequired()
@@ -125,6 +173,41 @@ namespace TSSLogParser.EFCore
                 entity.Property(e => e.WebTopResult).HasMaxLength(255);
             });
 
+            modelBuilder.Entity<FlatEvent>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("FlatEvent");
+
+                entity.Property(e => e.Channel).HasMaxLength(255);
+
+                entity.Property(e => e.Computer).HasMaxLength(255);
+
+                entity.Property(e => e.EventDataId)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("EventData_Id");
+
+                entity.Property(e => e.EventId)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("Event_Id");
+
+                entity.Property(e => e.EventId1).HasColumnName("EventID");
+
+                entity.Property(e => e.EventRecordId).HasColumnName("EventRecordID");
+
+                entity.Property(e => e.Keywords).HasMaxLength(255);
+
+                entity.Property(e => e.Name).HasMaxLength(255);
+
+                entity.Property(e => e.Security).HasMaxLength(255);
+
+                entity.Property(e => e.SystemId)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("System_Id");
+
+                entity.Property(e => e.SystemTime).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<GlobalMachineCount>(entity =>
             {
                 entity.HasNoKey();
@@ -144,6 +227,8 @@ namespace TSSLogParser.EFCore
 
                 entity.ToView("GlobalMessageCounts");
 
+                entity.Property(e => e.AppService).HasMaxLength(255);
+
                 entity.Property(e => e.LevelDisplayName).HasMaxLength(255);
 
                 entity.Property(e => e.LogName)
@@ -162,6 +247,8 @@ namespace TSSLogParser.EFCore
                 entity.HasNoKey();
 
                 entity.ToView("GlobalTotals");
+
+                entity.Property(e => e.AppService).HasMaxLength(255);
 
                 entity.Property(e => e.LevelDisplayName).HasMaxLength(255);
 
@@ -201,11 +288,26 @@ namespace TSSLogParser.EFCore
                 entity.Property(e => e.Region).HasMaxLength(3);
             });
 
+            modelBuilder.Entity<Provider>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("Provider");
+
+                entity.Property(e => e.Name).HasMaxLength(255);
+
+                entity.Property(e => e.SystemId)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("System_Id");
+            });
+
             modelBuilder.Entity<Recommendation>(entity =>
             {
                 entity.HasNoKey();
 
                 entity.ToView("Recommendations");
+
+                entity.Property(e => e.AppService).HasMaxLength(255);
 
                 entity.Property(e => e.LevelDisplayName).HasMaxLength(255);
 
@@ -225,6 +327,8 @@ namespace TSSLogParser.EFCore
                 entity.HasNoKey();
 
                 entity.ToView("RegionalMachineCounts");
+
+                entity.Property(e => e.AppService).HasMaxLength(255);
 
                 entity.Property(e => e.CountryCode).HasMaxLength(2);
 
@@ -246,6 +350,8 @@ namespace TSSLogParser.EFCore
                 entity.ToView("RegionalMessageCounts");
 
                 entity.Property(e => e.AppCode).HasMaxLength(3);
+
+                entity.Property(e => e.AppService).HasMaxLength(255);
 
                 entity.Property(e => e.CountryCode).HasMaxLength(2);
 
@@ -284,6 +390,8 @@ namespace TSSLogParser.EFCore
 
                 entity.Property(e => e.AppCode).HasMaxLength(3);
 
+                entity.Property(e => e.AppService).HasMaxLength(255);
+
                 entity.Property(e => e.CountryCode).HasMaxLength(2);
 
                 entity.Property(e => e.InfraCode).HasMaxLength(2);
@@ -301,6 +409,46 @@ namespace TSSLogParser.EFCore
                 entity.Property(e => e.Region).HasMaxLength(3);
 
                 entity.Property(e => e.WebTopResult).HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<System>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("System");
+
+                entity.Property(e => e.Channel).HasMaxLength(255);
+
+                entity.Property(e => e.Computer).HasMaxLength(255);
+
+                entity.Property(e => e.EventId).HasColumnName("EventID");
+
+                entity.Property(e => e.EventId1)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("Event_Id");
+
+                entity.Property(e => e.EventRecordId).HasColumnName("EventRecordID");
+
+                entity.Property(e => e.Keywords).HasMaxLength(255);
+
+                entity.Property(e => e.Security).HasMaxLength(255);
+
+                entity.Property(e => e.SystemId)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("System_Id");
+            });
+
+            modelBuilder.Entity<TimeCreated>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("TimeCreated");
+
+                entity.Property(e => e.SystemId)
+                    .HasColumnType("numeric(20, 0)")
+                    .HasColumnName("System_Id");
+
+                entity.Property(e => e.SystemTime).HasColumnType("datetime");
             });
 
             OnModelCreatingPartial(modelBuilder);

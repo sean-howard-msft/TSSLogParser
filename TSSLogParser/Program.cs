@@ -13,7 +13,6 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Management.Automation;
-using System.Management.Automation.Runspaces;
 using System.Text;
 using System.Threading;
 using TSSLogParser.EFCore;
@@ -59,7 +58,7 @@ namespace TSSLogParser
             public bool GetRecommendations { get; set; }
 
             [Option('w', "writerecommendations", Required = false, HelpText = "Write the final report.")]
-            public bool IncludRecommendations { get; internal set; }
+            public bool IncludeRecommendations { get; internal set; }
         }
 
         [Verb("recommend", HelpText = "Get top links from searches based on log entries")]
@@ -85,6 +84,7 @@ namespace TSSLogParser
                   .MapResult(
                       (OutputReportsOptions opts) => RunReports(opts),
                       (ParseTSSOptions opts) => ParseTSS(opts),
+                      (RecommendationOptions opts) => GetRecommendations(opts),
                       errs => 1);
             }
         }
@@ -108,7 +108,9 @@ namespace TSSLogParser
             Console.WriteLine($"Start Time { startTime }");
             try
             {
-                var savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TSS Reports");
+                var savePath = options.Directory;
+                if (string.IsNullOrEmpty(options.Directory))
+                    savePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "TSS Reports");
                 if (!Directory.Exists(savePath))
                     Directory.CreateDirectory(savePath);
 
@@ -195,7 +197,6 @@ namespace TSSLogParser
                 {
                     DataSet globalDataSet = new DataSet();
                     var globalTotals = db.GlobalTotals
-                        .Where(gt => gt.MsftDocsSearch == null)
                         .ToDataTable();
                     globalDataSet.Tables.Add(globalTotals);
 
@@ -215,7 +216,7 @@ namespace TSSLogParser
                     }.Start();
                 }
 
-                if (options.IncludRecommendations)
+                if (options.IncludeRecommendations)
                 {
                     DataSet recommendationsDataset = new DataSet();
                     var recommendations = db.Recommendations
@@ -250,7 +251,6 @@ namespace TSSLogParser
             {
                 if (options.All)
                    globalTotals = db.GlobalTotals
-                   .Where(gt => gt.MsftDocsSearch == null)
                    .ToDataTable();
                 else
                     globalTotals = db.GlobalTotals
@@ -267,7 +267,7 @@ namespace TSSLogParser
             {
                 try
                 {
-                    string searchString = row["TruncatedMessage"] + " " + row["ProviderName"];
+                    string searchString = string.Join(' ', row["ProviderName"], row["Id"], row["TruncatedMessage"]);
                     var msftResult = recommendationEngine.SearchGoogle(searchString, "docs.microsoft.com", true);
                     var webResult = recommendationEngine.SearchGoogle(searchString, "docs.microsoft.com", false);
 
@@ -304,7 +304,7 @@ namespace TSSLogParser
             // Get TSS ZIP files from specified directory
             var zipPaths = Directory
                 .EnumerateFiles(opts.Directory)
-                .Where(p => Path.GetExtension(p) == ".zip" && p.Contains("tss_"));
+                .Where(p => Path.GetExtension(p) == ".zip");
             if (opts.Verbose)
             {
                 Console.WriteLine("Zip files in path are: ");
@@ -324,130 +324,8 @@ namespace TSSLogParser
                             Directory.CreateDirectory(unzipFolder);
                         }
 
-                        var entries = zip.Entries
-                            .Where(e => e.Name.EndsWith(".evtx"));
-                        if (opts.Verbose)
-                        {
-                            Console.WriteLine($"EventLog files in {Path.GetFileName(zipPath)} are: ");
-                            entries.ToList().ForEach(e => Console.WriteLine(e));
-                        }
-
-                        var script = File.ReadAllText("AppLogs.ps1");
-                        foreach (var entry in entries)
-                        {
-                            string destinationFileName = $"{unzipFolder}\\{entry.Name}";
-                            string csvPath = Path.Combine(
-                                Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), 
-                                "app_data", 
-                                $"{Path.GetFileNameWithoutExtension(destinationFileName)}.csv");
-                            try
-                            {
-                                // Extract the logs to a folder, use PS to parse, export to CSV
-                                entry.ExtractToFile(destinationFileName, true);
-                                using (var powerShellInstance = PowerShell.Create())
-                                {
-                                    Collection<PSObject> results = powerShellInstance
-                                        .AddScript(script)
-                                        .AddParameters(new Dictionary<string, string>
-                                        {
-                                            { "eventLog" , destinationFileName},
-                                            { "exportCSV", csvPath}
-                                        })
-                                        .Invoke();
-                                    Collection<ErrorRecord> errors = powerShellInstance.Streams.Error.ReadAll();
-                                    StringBuilder sb = new StringBuilder();
-                                    if (errors.Count > 0)
-                                    {
-                                        foreach (ErrorRecord error in errors)
-                                        {
-                                            Console.Error.WriteLine($"{entry.Name}: {error}");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        foreach (PSObject result in results)
-                                        {
-                                            Console.WriteLine(result.ToString());
-                                        }
-                                    }
-                                }
-
-                                if (File.Exists(csvPath))
-                                {
-                                    // Load CSV to DataTable
-                                    DataTable csvData = new DataTable();
-                                    using (TextFieldParser csvReader = new TextFieldParser(csvPath))
-                                    {
-                                        csvReader.SetDelimiters(new string[] { "," });
-                                        csvReader.HasFieldsEnclosedInQuotes = true;
-                                        string[] colFields = csvReader.ReadFields();
-                                        if (colFields != null)
-                                        {
-                                            foreach (string column in colFields)
-                                            {
-                                                DataColumn datacolumn = new DataColumn(column)
-                                                {
-                                                    Unique = column == "RecordId",
-                                                    AllowDBNull = true
-                                                };
-                                                csvData.Columns.Add(datacolumn);
-                                            }
-                                            while (!csvReader.EndOfData)
-                                            {
-                                                try
-                                                {
-                                                    string[] fieldData = csvReader.ReadFields();
-                                                    //Making empty value as null
-                                                    for (int i = 0; i < fieldData.Length; i++)
-                                                    {
-                                                        if (fieldData[i] == "")
-                                                        {
-                                                            fieldData[i] = null;
-                                                        }
-                                                    }
-                                                    csvData.Rows.Add(fieldData);
-                                                }
-                                                catch (Exception)
-                                                {
-                                                    // Silently Deduplicate
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    if (csvData.Rows.Count > 0)
-                                    {
-                                        try
-                                        {
-                                            // Load DataTable to SQL DB using bulkcopy
-                                            using (SqlConnection dbConnection = new SqlConnection(Configuration["TSSLogParser:ConnectionString"]))
-                                            {
-                                                dbConnection.Open();
-                                                using (SqlBulkCopy s = new SqlBulkCopy(dbConnection))
-                                                {
-                                                    s.DestinationTableName = "EventLogs";
-
-                                                    foreach (var column in csvData.Columns)
-                                                        s.ColumnMappings.Add(column.ToString(), column.ToString());
-
-                                                    s.WriteToServer(csvData);
-                                                }
-                                            }
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            Console.Error.WriteLine(ex.Message);
-                                        }
-                                    }
-
-                                    File.Delete(csvPath);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.Error.WriteLine($"Error processing {entry.Name}: {ex}");
-                            }
-                        }
+                        ParseEVTX(opts, zipPath, zip, unzipFolder);
+                        ParseEventLogXML(opts, zipPath, zip, unzipFolder);
                     }
                 }
                 catch (Exception ex)
@@ -457,9 +335,167 @@ namespace TSSLogParser
             }
 
             // Run Reports
-            RunReports(new OutputReportsOptions() { Directory = opts.Directory, Verbose = opts.Verbose });
+            RunReports(new OutputReportsOptions() { Directory = opts.Directory, Verbose = opts.Verbose, IncludeRecommendations = true });
 
             return 0;
+        }
+
+        private static void ParseEVTX(ParseTSSOptions opts, string zipPath, ZipArchive zip, string unzipFolder)
+        {
+            var entries = zip.Entries.Where(e => e.Name.EndsWith(".evtx"));
+            if (opts.Verbose)
+            {
+                Console.WriteLine($"EventLog files in {Path.GetFileName(zipPath)} are: ");
+                entries.ToList().ForEach(e => Console.WriteLine(e));
+            }
+
+            var script = File.ReadAllText("AppLogs.ps1");
+            foreach (var entry in entries)
+            {
+                string destinationFileName = $"{unzipFolder}\\{entry.Name}";
+                string csvPath = Path.Combine(
+                    Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),
+                    "app_data",
+                    $"{Path.GetFileNameWithoutExtension(destinationFileName)}.csv");
+                try
+                {
+                    // Extract the logs to a folder, use PS to parse, export to CSV
+                    entry.ExtractToFile(destinationFileName, true);
+                    using (var powerShellInstance = PowerShell.Create())
+                    {
+                        Collection<PSObject> results = powerShellInstance
+                            .AddScript(script)
+                            .AddParameters(new Dictionary<string, string>
+                            {
+                                { "eventLog" , destinationFileName},
+                                { "exportCSV", csvPath}
+                            })
+                            .Invoke();
+                        Collection<ErrorRecord> errors = powerShellInstance.Streams.Error.ReadAll();
+                        StringBuilder sb = new StringBuilder();
+                        if (errors.Count > 0)
+                        {
+                            foreach (ErrorRecord error in errors)
+                            {
+                                Console.Error.WriteLine($"{entry.Name}: {error}");
+                            }
+                        }
+                        else
+                        {
+                            foreach (PSObject result in results)
+                            {
+                                Console.WriteLine(result.ToString());
+                            }
+                        }
+                    }
+
+                    if (File.Exists(csvPath))
+                    {
+                        // Load CSV to DataTable
+                        DataTable csvData = new DataTable();
+                        using (TextFieldParser csvReader = new TextFieldParser(csvPath))
+                        {
+                            csvReader.SetDelimiters(new string[] { "," });
+                            csvReader.HasFieldsEnclosedInQuotes = true;
+                            string[] colFields = csvReader.ReadFields();
+                            if (colFields != null)
+                            {
+                                foreach (string column in colFields)
+                                {
+                                    DataColumn datacolumn = new DataColumn(column)
+                                    {
+                                        Unique = column == "RecordId",
+                                        AllowDBNull = true
+                                    };
+                                    csvData.Columns.Add(datacolumn);
+                                }
+                                while (!csvReader.EndOfData)
+                                {
+                                    try
+                                    {
+                                        string[] fieldData = csvReader.ReadFields();
+                                        //Making empty value as null
+                                        for (int i = 0; i < fieldData.Length; i++)
+                                        {
+                                            if (fieldData[i] == "")
+                                            {
+                                                fieldData[i] = null;
+                                            }
+                                        }
+                                        csvData.Rows.Add(fieldData);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        // Silently Deduplicate
+                                    }
+                                }
+                            }
+                        }
+
+                        if (csvData.Rows.Count > 0)
+                        {
+                            try
+                            {
+                                // Load DataTable to SQL DB using bulkcopy
+                                using (SqlConnection dbConnection = new SqlConnection(Configuration["TSSLogParser:ConnectionString"]))
+                                {
+                                    dbConnection.Open();
+                                    using (SqlBulkCopy s = new SqlBulkCopy(dbConnection))
+                                    {
+                                        s.DestinationTableName = "EventLogs";
+
+                                        foreach (var column in csvData.Columns)
+                                            s.ColumnMappings.Add(column.ToString(), column.ToString());
+
+                                        s.WriteToServer(csvData);
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.Error.WriteLine(ex.Message);
+                            }
+                        }
+
+                        File.Delete(csvPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine($"Error processing {entry.Name}: {ex}");
+                }
+            }
+        }
+
+        private static void ParseEventLogXML(ParseTSSOptions opts, string zipPath, ZipArchive zip, string unzipFolder)
+        {
+            var entries = zip.Entries.Where(e => e.Name.ToLower().EndsWith("eventlog.xml"));
+            if (opts.Verbose)
+            {
+                Console.WriteLine($"EventLog files in {Path.GetFileName(zipPath)} are: ");
+                entries.ToList().ForEach(e => Console.WriteLine(e));
+            }
+
+            foreach (var entry in entries)
+            {
+                try
+                {
+                    var filePath = Path.Combine(unzipFolder, entry.FullName);
+                    if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+                    {
+                        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                    }
+                    entry.ExtractToFile(filePath , true);
+
+                    var fe = db.Procedures.RunSSISPkgXMLImportAsync(filePath).Result;
+
+                    var re = db.Procedures.FlatEventImportAsync(Path.GetFileNameWithoutExtension(zipPath)).Result;
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine(ex.Message);
+                }
+            }
         }
     }
 }

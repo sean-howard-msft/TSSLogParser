@@ -2,10 +2,12 @@
 AS 
 
 SELECT 
+	msgCnt.AppService, 
 	msgCnt.LogName, 
 	msgCnt.ProviderName, 
 	msgCnt.TruncatedMessage, 
 	msgCnt.LevelDisplayName,
+	msgCnt.Id,
 	msgCnt.CountryCode,
 	msgCnt.Region,
 	msgCnt.AppCode,
@@ -17,8 +19,8 @@ SELECT
     msgCnt.MsftDocsTopResult,
     msgCnt.WebSearch,
     msgCnt.WebTopResult
-FROM RegionalMessageCounts AS msgCnt 
-	INNER JOIN RegionalMachineCounts AS machCnt 
+FROM dbo.RegionalMessageCounts AS msgCnt 
+	INNER JOIN dbo.RegionalMachineCounts AS machCnt 
 		ON msgCnt.LogName = machCnt.LogName 
 		AND msgCnt.ProviderName = machCnt.ProviderName 
 		AND msgCnt.TruncatedMessage = machCnt.TruncatedMessage 

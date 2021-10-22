@@ -12,7 +12,7 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-    UPDATE EventLogs
+    UPDATE dbo.EventLogs
 	SET [MsftDocsSearch] = @MsftDocsSearch
       ,[MsftDocsTopResult] = @MsftDocsTopResult
       ,[WebSearch] = @WebSearch

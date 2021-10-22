@@ -76,5 +76,32 @@
     <Build Include="dbo\Views\EventLogsFresh.sql" />
     <Build Include="dbo\Stored Procedures\RecommendationImport.sql" />
     <Build Include="dbo\Views\Recommendations.sql" />
+    <Build Include="dbo\Stored Procedures\FlatEventImport.sql" />
+    <Build Include="dbo\Tables\TimeCreated.sql" />
+    <Build Include="dbo\Tables\System.sql" />
+    <Build Include="dbo\Tables\Provider.sql" />
+    <Build Include="dbo\Tables\EventData.sql" />
+    <Build Include="dbo\Tables\Event.sql" />
+    <Build Include="dbo\Tables\Data.sql" />
+    <Build Include="dbo\Views\FlatEvent.sql" />
+    <Build Include="dbo\Stored Procedures\RunSSISPkgXMLImport.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="SSISDB">
+      <DefaultValue>TSSLogParser.SSISDB</DefaultValue>
+      <Value>$(SqlCmdVar__2)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+  <ItemGroup>
+    <ArtifactReference Include="..\TSSLogParser.SSISDB\bin\Debug\TSSLogParser.SSISDB.dacpac">
+      <HintPath>..\TSSLogParser.SSISDB\bin\Debug\TSSLogParser.SSISDB.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>SSISDB</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
+      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
+    </ArtifactReference>
   </ItemGroup>
 </Project>

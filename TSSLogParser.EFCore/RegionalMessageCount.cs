@@ -8,11 +8,13 @@ namespace TSSLogParser.EFCore
 {
     public partial class RegionalMessageCount
     {
+        public string AppService { get; set; }
         public string LogName { get; set; }
         public string ProviderName { get; set; }
         public string LevelDisplayName { get; set; }
         public string MachineName { get; set; }
         public string TruncatedMessage { get; set; }
+        public int? Id { get; set; }
         public string FullMessage { get; set; }
         public string MsftDocsSearch { get; set; }
         public string MsftDocsTopResult { get; set; }

@@ -8,6 +8,7 @@ namespace TSSLogParser.EFCore
 {
     public partial class EventLogsFresh
     {
+        public string AppService { get; set; }
         public int RecordId { get; set; }
         public string MachineName { get; set; }
         public string LogName { get; set; }

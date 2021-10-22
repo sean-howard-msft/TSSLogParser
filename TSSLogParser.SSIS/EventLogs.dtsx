@@ -1,0 +1,2181 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/20/2021 8:03:42 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="HOWARD"
+  DTS:CreatorName="NORTHAMERICA\cshoward"
+  DTS:DTSID="{6E0C0B4B-9453-467E-B706-4D36ECF9BED6}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.170"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="EventLogs"
+  DTS:PackageType="5"
+  DTS:VersionBuild="15"
+  DTS:VersionGUID="{E7374FC3-C43E-4563-9C18-12CDE8E352BB}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[eventlog.xml]"
+      DTS:CreationName="FILE"
+      DTS:DTSID="{DE6F5F09-5BDE-4E44-891D-532E7DFF6594}"
+      DTS:ObjectName="eventlog.xml">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="C:\Users\cshoward\OneDrive - Microsoft\Desktop\Dumps\APSPCANENGWAP01\eventlog.xml" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[LocalHost.TSSParser]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{6D671AC7-C3A6-4640-A77E-3488EA2C9673}"
+      DTS:ObjectName="LocalHost.TSSParser">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=.;Initial Catalog=TSSParser;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:PackageParameters>
+    <DTS:PackageParameter
+      DTS:CreationName=""
+      DTS:DataType="8"
+      DTS:DTSID="{1A36FB07-0A59-41F9-B033-C304FDD24105}"
+      DTS:ObjectName="FilePath"
+      DTS:Required="True">
+      <DTS:Property
+        DTS:DataType="8"
+        DTS:Name="ParameterValue"
+        xml:space="preserve"></DTS:Property>
+    </DTS:PackageParameter>
+  </DTS:PackageParameters>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\XML Data Flow Task"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{44DB57A2-DBF9-4C08-830A-C2F58D4F2783}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="XML Data Flow Task"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\XML Data Flow Task\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[Event]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\XML Data Flow Task\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\XML Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Event_Id]"
+                      cachedDataType="ui8"
+                      cachedName="Event_Id"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Event_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Event].Columns[Event_Id]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Event_Id]"
+                      dataType="numeric"
+                      name="Event_Id"
+                      precision="20" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\XML Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\XML Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\XML Data Flow Task\OLE DB Destination 1"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination 1"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[EventData]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\XML Data Flow Task\OLE DB Destination 1.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input].Columns[EventData_Id]"
+                      cachedDataType="ui8"
+                      cachedName="EventData_Id"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input].ExternalColumns[EventData_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[EventData].Columns[EventData_Id]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input].Columns[Binary]"
+                      cachedDataType="ui4"
+                      cachedName="Binary"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input].ExternalColumns[Binary]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[EventData].Columns[Binary]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input].Columns[Event_Id]"
+                      cachedDataType="ui8"
+                      cachedName="Event_Id"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input].ExternalColumns[Event_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[EventData].Columns[Event_Id]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input].ExternalColumns[EventData_Id]"
+                      dataType="numeric"
+                      name="EventData_Id"
+                      precision="20" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input].ExternalColumns[Binary]"
+                      dataType="i8"
+                      name="Binary" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input].ExternalColumns[Event_Id]"
+                      dataType="numeric"
+                      name="Event_Id"
+                      precision="20" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\XML Data Flow Task\OLE DB Destination 1.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 1.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination 1.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 1.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination 1.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\XML Data Flow Task\OLE DB Destination 2"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination 2"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[Data]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\XML Data Flow Task\OLE DB Destination 2.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\XML Data Flow Task\OLE DB Destination 2.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 2.Inputs[OLE DB Destination Input].Columns[Data]"
+                      cachedDataType="wstr"
+                      cachedLength="4000"
+                      cachedName="Data"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 2.Inputs[OLE DB Destination Input].ExternalColumns[Data]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Data].Columns[Data]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 2.Inputs[OLE DB Destination Input].Columns[EventData_Id]"
+                      cachedDataType="ui8"
+                      cachedName="EventData_Id"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 2.Inputs[OLE DB Destination Input].ExternalColumns[EventData_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Data].Columns[EventData_Id]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 2.Inputs[OLE DB Destination Input].ExternalColumns[Data]"
+                      dataType="nText"
+                      name="Data" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 2.Inputs[OLE DB Destination Input].ExternalColumns[EventData_Id]"
+                      dataType="numeric"
+                      name="EventData_Id"
+                      precision="20" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 2.Inputs[OLE DB Destination Input].ExternalColumns[Event_Id]"
+                      dataType="numeric"
+                      name="Event_Id"
+                      precision="20" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\XML Data Flow Task\OLE DB Destination 2.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\XML Data Flow Task\OLE DB Destination 2.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 2.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination 2.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 2.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination 2.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\XML Data Flow Task\OLE DB Destination 3"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination 3"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[Provider]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\XML Data Flow Task\OLE DB Destination 3.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\XML Data Flow Task\OLE DB Destination 3.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 3.Inputs[OLE DB Destination Input].Columns[Name]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Name"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 3.Inputs[OLE DB Destination Input].ExternalColumns[Name]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Provider].Columns[Name]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 3.Inputs[OLE DB Destination Input].Columns[System_Id]"
+                      cachedDataType="ui8"
+                      cachedName="System_Id"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 3.Inputs[OLE DB Destination Input].ExternalColumns[System_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Provider].Columns[System_Id]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 3.Inputs[OLE DB Destination Input].ExternalColumns[Name]"
+                      dataType="wstr"
+                      length="255"
+                      name="Name" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 3.Inputs[OLE DB Destination Input].ExternalColumns[System_Id]"
+                      dataType="numeric"
+                      name="System_Id"
+                      precision="20" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\XML Data Flow Task\OLE DB Destination 3.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\XML Data Flow Task\OLE DB Destination 3.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 3.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination 3.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 3.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination 3.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\XML Data Flow Task\OLE DB Destination 4"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination 4"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[System]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\XML Data Flow Task\OLE DB Destination 4.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].Columns[System_Id]"
+                      cachedDataType="ui8"
+                      cachedName="System_Id"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[System_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[System_Id]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].Columns[EventID]"
+                      cachedDataType="ui2"
+                      cachedName="EventID"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[EventID]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[EventID]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].Columns[Level]"
+                      cachedDataType="ui1"
+                      cachedName="Level"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Level]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Level]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].Columns[Task]"
+                      cachedDataType="ui1"
+                      cachedName="Task"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Task]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Task]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].Columns[Keywords]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Keywords"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Keywords]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Keywords]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].Columns[EventRecordID]"
+                      cachedDataType="i4"
+                      cachedName="EventRecordID"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[EventRecordID]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[EventRecordID]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].Columns[Channel]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Channel"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Channel]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Channel]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].Columns[Computer]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Computer"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Computer]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Computer]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].Columns[Security]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="Security"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Security]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Security]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].Columns[Event_Id]"
+                      cachedDataType="ui8"
+                      cachedName="Event_Id"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Event_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Event_Id]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[System_Id]"
+                      dataType="numeric"
+                      name="System_Id"
+                      precision="20" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[EventID]"
+                      dataType="i4"
+                      name="EventID" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Level]"
+                      dataType="ui1"
+                      name="Level" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Task]"
+                      dataType="ui1"
+                      name="Task" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Keywords]"
+                      dataType="wstr"
+                      length="255"
+                      name="Keywords" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[EventRecordID]"
+                      dataType="i4"
+                      name="EventRecordID" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Channel]"
+                      dataType="wstr"
+                      length="255"
+                      name="Channel" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Computer]"
+                      dataType="wstr"
+                      length="255"
+                      name="Computer" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Security]"
+                      dataType="wstr"
+                      length="255"
+                      name="Security" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input].ExternalColumns[Event_Id]"
+                      dataType="numeric"
+                      name="Event_Id"
+                      precision="20" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\XML Data Flow Task\OLE DB Destination 4.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination 4.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 4.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination 4.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\XML Data Flow Task\OLE DB Destination 5"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination 5"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[TimeCreated]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\XML Data Flow Task\OLE DB Destination 5.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  connectionManagerRefId="Package.ConnectionManagers[LocalHost.TSSParser]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\XML Data Flow Task\OLE DB Destination 5.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 5.Inputs[OLE DB Destination Input].Columns[SystemTime]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="SystemTime"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 5.Inputs[OLE DB Destination Input].ExternalColumns[SystemTime]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated].Columns[SystemTime]" />
+                    <inputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 5.Inputs[OLE DB Destination Input].Columns[System_Id]"
+                      cachedDataType="ui8"
+                      cachedName="System_Id"
+                      externalMetadataColumnId="Package\XML Data Flow Task\OLE DB Destination 5.Inputs[OLE DB Destination Input].ExternalColumns[System_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated].Columns[System_Id]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 5.Inputs[OLE DB Destination Input].ExternalColumns[SystemTime]"
+                      dataType="dbTimeStamp"
+                      name="SystemTime" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 5.Inputs[OLE DB Destination Input].ExternalColumns[System_Id]"
+                      dataType="numeric"
+                      name="System_Id"
+                      precision="20" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\XML Data Flow Task\OLE DB Destination 5.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\XML Data Flow Task\OLE DB Destination 5.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 5.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination 5.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\OLE DB Destination 5.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\OLE DB Destination 5.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\XML Data Flow Task\XML Source"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Extracts data from an XML file. For example, extract catalog data from an XML file that represents catalogs and catalog items. Before using, specify the schema and generate an output for each XML element.;Microsoft Corporation;Microsoft SQL Server; Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Extracts data from an XML file. For example, extract catalog data from an XML file that represents catalogs and catalog items. Before using, specify the schema and generate an output for each XML element."
+              name="XML Source"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.XmlSourceAdapter</property>
+                <property
+                  dataType="System.String"
+                  description="The XML data used by the XML source adapter."
+                  expressionType="Notify"
+                  name="XMLData"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable used by the XML source adapter to specify XML data."
+                  name="XMLDataVariable">$Package::FilePath</property>
+                <property
+                  dataType="System.Int32"
+                  description="Defines how the XML source adapter gets XML data."
+                  name="AccessMode">1</property>
+                <property
+                  dataType="System.String"
+                  description="The XML schema definition used by the XML source adapter."
+                  expressionType="Notify"
+                  name="XMLSchemaDefinition">C:\Users\cshoward\source\repos\TSSLogParser\TSSLogParser.SSIS\eventlog.xsd</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Identifies whether or not to use inline schema."
+                  name="UseInlineSchema">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Defines how XML integer types are mapped."
+                  name="XMLIntegerMapping"
+                  typeConverter="Microsoft.SqlServer.Dts.Pipeline.XmlSourceAdapter+XMLIntegerMappingConverter">0</property>
+              </properties>
+              <outputs>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[Provider]"
+                  name="Provider">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">Provider</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Provider].Columns[Name]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[Provider].ExternalColumns[Name]"
+                      length="255"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Provider].Columns[Name]"
+                      name="Name"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Provider].Columns[System_Id]"
+                      dataType="ui8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[Provider].ExternalColumns[System_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Provider].Columns[System_Id]"
+                      name="System_Id"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Provider].ExternalColumns[Name]"
+                      dataType="wstr"
+                      length="255"
+                      name="Name">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.String</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Provider].ExternalColumns[System_Id]"
+                      dataType="ui8"
+                      name="System_Id">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.UInt64</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output]"
+                  isErrorOut="true"
+                  name="Provider Error Output">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">Provider</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].Columns[Name]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].ExternalColumns[Name]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].Columns[Name]"
+                      name="Name" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].Columns[System_Id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].ExternalColumns[System_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].Columns[System_Id]"
+                      name="System_Id" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].ExternalColumns[Name]"
+                      dataType="nText"
+                      name="Name" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Provider Error Output].ExternalColumns[System_Id]"
+                      dataType="nText"
+                      name="System_Id" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated]"
+                  name="TimeCreated">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">TimeCreated</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated].Columns[SystemTime]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated].ExternalColumns[SystemTime]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated].Columns[SystemTime]"
+                      name="SystemTime"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated].Columns[System_Id]"
+                      dataType="ui8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated].ExternalColumns[System_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated].Columns[System_Id]"
+                      name="System_Id"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated].ExternalColumns[SystemTime]"
+                      dataType="dbTimeStamp"
+                      name="SystemTime">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.DateTime</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated].ExternalColumns[System_Id]"
+                      dataType="ui8"
+                      name="System_Id">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.UInt64</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output]"
+                  isErrorOut="true"
+                  name="TimeCreated Error Output">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">TimeCreated</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].Columns[SystemTime]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].ExternalColumns[SystemTime]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].Columns[SystemTime]"
+                      name="SystemTime" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].Columns[System_Id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].ExternalColumns[System_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].Columns[System_Id]"
+                      name="System_Id" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].ExternalColumns[SystemTime]"
+                      dataType="nText"
+                      name="SystemTime" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated Error Output].ExternalColumns[System_Id]"
+                      dataType="nText"
+                      name="System_Id" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[System]"
+                  name="System">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">System</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[System_Id]"
+                      dataType="ui8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[System_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[System_Id]"
+                      name="System_Id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[EventID]"
+                      dataType="ui2"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[EventID]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[EventID]"
+                      name="EventID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Level]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Level]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Level]"
+                      name="Level"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Task]"
+                      dataType="ui1"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Task]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Task]"
+                      name="Task"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Keywords]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Keywords]"
+                      length="255"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Keywords]"
+                      name="Keywords"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[EventRecordID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[EventRecordID]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[EventRecordID]"
+                      name="EventRecordID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Channel]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Channel]"
+                      length="255"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Channel]"
+                      name="Channel"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Computer]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Computer]"
+                      length="255"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Computer]"
+                      name="Computer"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Security]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Security]"
+                      length="255"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Security]"
+                      name="Security"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Event_Id]"
+                      dataType="ui8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Event_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System].Columns[Event_Id]"
+                      name="Event_Id"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[System_Id]"
+                      dataType="ui8"
+                      name="System_Id">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.UInt64</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[EventID]"
+                      dataType="ui2"
+                      name="EventID">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.UInt16</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Level]"
+                      dataType="ui1"
+                      name="Level">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.Byte</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Task]"
+                      dataType="ui1"
+                      name="Task">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.Byte</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Keywords]"
+                      dataType="wstr"
+                      length="255"
+                      name="Keywords">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.String</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[EventRecordID]"
+                      dataType="i4"
+                      name="EventRecordID">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.Int32</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Channel]"
+                      dataType="wstr"
+                      length="255"
+                      name="Channel">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.String</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Computer]"
+                      dataType="wstr"
+                      length="255"
+                      name="Computer">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.String</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Security]"
+                      dataType="wstr"
+                      length="255"
+                      name="Security">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.String</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System].ExternalColumns[Event_Id]"
+                      dataType="ui8"
+                      name="Event_Id">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.UInt64</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output]"
+                  isErrorOut="true"
+                  name="System Error Output">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">System</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[System_Id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[System_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[System_Id]"
+                      name="System_Id" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[EventID]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[EventID]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[EventID]"
+                      name="EventID" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Level]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Level]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Level]"
+                      name="Level" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Task]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Task]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Task]"
+                      name="Task" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Keywords]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Keywords]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Keywords]"
+                      name="Keywords" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[EventRecordID]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[EventRecordID]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[EventRecordID]"
+                      name="EventRecordID" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Channel]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Channel]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Channel]"
+                      name="Channel" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Computer]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Computer]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Computer]"
+                      name="Computer" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Security]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Security]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Security]"
+                      name="Security" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Event_Id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Event_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[Event_Id]"
+                      name="Event_Id" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[System_Id]"
+                      dataType="nText"
+                      name="System_Id" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[EventID]"
+                      dataType="nText"
+                      name="EventID" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Level]"
+                      dataType="nText"
+                      name="Level" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Task]"
+                      dataType="nText"
+                      name="Task" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Keywords]"
+                      dataType="nText"
+                      name="Keywords" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[EventRecordID]"
+                      dataType="nText"
+                      name="EventRecordID" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Channel]"
+                      dataType="nText"
+                      name="Channel" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Computer]"
+                      dataType="nText"
+                      name="Computer" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Security]"
+                      dataType="nText"
+                      name="Security" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[System Error Output].ExternalColumns[Event_Id]"
+                      dataType="nText"
+                      name="Event_Id" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[Data]"
+                  name="Data">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">Data</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Data].Columns[Data]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[Data].ExternalColumns[Data]"
+                      length="4000"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Data].Columns[Data]"
+                      name="Data"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Data].Columns[EventData_Id]"
+                      dataType="ui8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[Data].ExternalColumns[EventData_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Data].Columns[EventData_Id]"
+                      name="EventData_Id"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Data].ExternalColumns[Data]"
+                      dataType="wstr"
+                      length="4000"
+                      name="Data">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.String</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Data].ExternalColumns[EventData_Id]"
+                      dataType="ui8"
+                      name="EventData_Id">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.UInt64</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output]"
+                  isErrorOut="true"
+                  name="Data Error Output">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">Data</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].Columns[Data]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].ExternalColumns[Data]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].Columns[Data]"
+                      name="Data" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].Columns[EventData_Id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].ExternalColumns[EventData_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].Columns[EventData_Id]"
+                      name="EventData_Id" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].ExternalColumns[Data]"
+                      dataType="nText"
+                      name="Data" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Data Error Output].ExternalColumns[EventData_Id]"
+                      dataType="nText"
+                      name="EventData_Id" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[EventData]"
+                  name="EventData">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">EventData</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData].Columns[EventData_Id]"
+                      dataType="ui8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[EventData].ExternalColumns[EventData_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[EventData].Columns[EventData_Id]"
+                      name="EventData_Id"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData].Columns[Binary]"
+                      dataType="ui4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[EventData].ExternalColumns[Binary]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[EventData].Columns[Binary]"
+                      name="Binary"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData].Columns[Event_Id]"
+                      dataType="ui8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[EventData].ExternalColumns[Event_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[EventData].Columns[Event_Id]"
+                      name="Event_Id"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData].ExternalColumns[EventData_Id]"
+                      dataType="ui8"
+                      name="EventData_Id">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.UInt64</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData].ExternalColumns[Binary]"
+                      dataType="ui4"
+                      name="Binary">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.UInt32</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData].ExternalColumns[Event_Id]"
+                      dataType="ui8"
+                      name="Event_Id">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.UInt64</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output]"
+                  isErrorOut="true"
+                  name="EventData Error Output">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">EventData</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].Columns[EventData_Id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].ExternalColumns[EventData_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].Columns[EventData_Id]"
+                      name="EventData_Id" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].Columns[Binary]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].ExternalColumns[Binary]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].Columns[Binary]"
+                      name="Binary" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].Columns[Event_Id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].ExternalColumns[Event_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].Columns[Event_Id]"
+                      name="Event_Id" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].ExternalColumns[EventData_Id]"
+                      dataType="nText"
+                      name="EventData_Id" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].ExternalColumns[Binary]"
+                      dataType="nText"
+                      name="Binary" />
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[EventData Error Output].ExternalColumns[Event_Id]"
+                      dataType="nText"
+                      name="Event_Id" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[Event]"
+                  name="Event">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">Event</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Event].Columns[Event_Id]"
+                      dataType="ui8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[Event].ExternalColumns[Event_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Event].Columns[Event_Id]"
+                      name="Event_Id"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Event].ExternalColumns[Event_Id]"
+                      dataType="ui8"
+                      name="Event_Id">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          name="CLRType">System.UInt64</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\XML Data Flow Task\XML Source.Outputs[Event Error Output]"
+                  isErrorOut="true"
+                  name="Event Error Output">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="Identifies the rowset associated with the output."
+                      name="RowsetID">Event</property>
+                  </properties>
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Event Error Output].Columns[Event_Id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\XML Data Flow Task\XML Source.Outputs[Event Error Output].ExternalColumns[Event_Id]"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Event Error Output].Columns[Event_Id]"
+                      name="Event_Id" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Event Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Event Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Event Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\XML Data Flow Task\XML Source.Outputs[Event Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\XML Data Flow Task\XML Source.Outputs[Event Error Output].ExternalColumns[Event_Id]"
+                      dataType="nText"
+                      name="Event_Id" />
+                  </externalMetadataColumns>
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\XML Data Flow Task.Paths[Data]"
+              endId="Package\XML Data Flow Task\OLE DB Destination 2.Inputs[OLE DB Destination Input]"
+              name="Data"
+              startId="Package\XML Data Flow Task\XML Source.Outputs[Data]" />
+            <path
+              refId="Package\XML Data Flow Task.Paths[Event]"
+              endId="Package\XML Data Flow Task\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Event"
+              startId="Package\XML Data Flow Task\XML Source.Outputs[Event]" />
+            <path
+              refId="Package\XML Data Flow Task.Paths[EventData]"
+              endId="Package\XML Data Flow Task\OLE DB Destination 1.Inputs[OLE DB Destination Input]"
+              name="EventData"
+              startId="Package\XML Data Flow Task\XML Source.Outputs[EventData]" />
+            <path
+              refId="Package\XML Data Flow Task.Paths[Provider]"
+              endId="Package\XML Data Flow Task\OLE DB Destination 3.Inputs[OLE DB Destination Input]"
+              name="Provider"
+              startId="Package\XML Data Flow Task\XML Source.Outputs[Provider]" />
+            <path
+              refId="Package\XML Data Flow Task.Paths[System]"
+              endId="Package\XML Data Flow Task\OLE DB Destination 4.Inputs[OLE DB Destination Input]"
+              name="System"
+              startId="Package\XML Data Flow Task\XML Source.Outputs[System]" />
+            <path
+              refId="Package\XML Data Flow Task.Paths[TimeCreated]"
+              endId="Package\XML Data Flow Task\OLE DB Destination 5.Inputs[OLE DB Destination Input]"
+              name="TimeCreated"
+              startId="Package\XML Data Flow Task\XML Source.Outputs[TimeCreated]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="176,42"
+          Id="Package\XML Data Flow Task"
+          TopLeft="152,206.9166656389" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\XML Data Flow Task">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="181.5,42"
+          Id="Package\XML Data Flow Task\OLE DB Destination 3"
+          TopLeft="350,51.9999997417132" />
+        <NodeLayout
+          Size="181.5,42"
+          Id="Package\XML Data Flow Task\OLE DB Destination 2"
+          TopLeft="284.5,451.749997756134" />
+        <NodeLayout
+          Size="136.5,42"
+          Id="Package\XML Data Flow Task\XML Source"
+          TopLeft="125.5,261.083332036518" />
+        <NodeLayout
+          Size="181.5,42"
+          Id="Package\XML Data Flow Task\OLE DB Destination 4"
+          TopLeft="93,36.291666486404" />
+        <NodeLayout
+          Size="181.5,42"
+          Id="Package\XML Data Flow Task\OLE DB Destination 5"
+          TopLeft="72.5,480.999997610847" />
+        <NodeLayout
+          Size="181.5,42"
+          Id="Package\XML Data Flow Task\OLE DB Destination 1"
+          TopLeft="576,293.583331875089" />
+        <NodeLayout
+          Size="173,42"
+          Id="Package\XML Data Flow Task\OLE DB Destination"
+          TopLeft="562,174.499999160568" />
+        <EdgeLayout
+          Id="Package\XML Data Flow Task.Paths[TimeCreated]"
+          TopLeft="162.4375,303.083332036518">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,177.916665574329"
+              Start="0,0"
+              End="0,170.416665574329">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,170.416665574329" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-28.68908203125,80.3338210684144,57.3781640625,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\XML Data Flow Task.Paths[System]"
+          TopLeft="172.333333333333,261.083332036518">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="11.4166666666667,-182.791665550114"
+              Start="0,0"
+              End="11.4166666666667,-175.291665550114">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-70.3873396373384" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-70.3873396373384"
+                    Point2="0,-74.3873396373384"
+                    Point3="4,-74.3873396373384" />
+                  <mssgle:LineSegment
+                    End="7.41666666666669,-74.3873396373384" />
+                  <mssgle:CubicBezierSegment
+                    Point1="7.41666666666669,-74.3873396373384"
+                    Point2="11.4166666666667,-74.3873396373384"
+                    Point3="11.4166666666667,-78.3873396373384" />
+                  <mssgle:LineSegment
+                    End="11.4166666666667,-175.291665550114" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-10.7953971354167,-69.3873396373384,33.0074609375,11.4140625"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\XML Data Flow Task.Paths[Provider]"
+          TopLeft="215.166666666667,261.083332036518">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="225.583333333333,-167.083332294805"
+              Start="0,0"
+              End="225.583333333333,-159.583332294805">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-63.9948101011445" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-63.9948101011445"
+                    Point2="0,-67.9948101011445"
+                    Point3="4,-67.9948101011445" />
+                  <mssgle:LineSegment
+                    End="221.583333333333,-67.9948101011445" />
+                  <mssgle:CubicBezierSegment
+                    Point1="221.583333333333,-67.9948101011445"
+                    Point2="225.583333333333,-67.9948101011445"
+                    Point3="225.583333333333,-71.9948101011445" />
+                  <mssgle:LineSegment
+                    End="225.583333333333,-159.583332294805" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="94.0829752604167,-62.9948101011445,37.4173828125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\XML Data Flow Task.Paths[EventData]"
+          TopLeft="262,282.083332036518">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="314,32.4999998385707"
+              Start="0,0"
+              End="306.5,32.4999998385707">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="153,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="153,0"
+                    Point2="157,0"
+                    Point3="157,4" />
+                  <mssgle:LineSegment
+                    End="157,28.4999998385707" />
+                  <mssgle:CubicBezierSegment
+                    Point1="157,28.4999998385707"
+                    Point2="157,32.4999998385707"
+                    Point3="161,32.4999998385707" />
+                  <mssgle:LineSegment
+                    End="306.5,32.4999998385707" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="133.986640625,-15.421875,46.02671875,9.421875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\XML Data Flow Task.Paths[Event]"
+          TopLeft="225.875,261.083332036518">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="422.625,-44.5833328759505"
+              Start="0,0"
+              End="422.625,-37.0833328759505">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-11.4306385642511" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-11.4306385642511"
+                    Point2="0,-15.4306385642511"
+                    Point3="4,-15.4306385642511" />
+                  <mssgle:LineSegment
+                    End="418.625,-15.4306385642511" />
+                  <mssgle:CubicBezierSegment
+                    Point1="418.625,-15.4306385642511"
+                    Point2="422.625,-15.4306385642511"
+                    Point3="422.625,-19.4306385642511" />
+                  <mssgle:LineSegment
+                    End="422.625,-37.0833328759505" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="198.30111328125,-10.4306385642511,26.0227734375,9.3974609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\XML Data Flow Task.Paths[Data]"
+          TopLeft="193.75,303.083332036518">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="181.5,148.666665719615"
+              Start="0,0"
+              End="181.5,141.166665719615">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,70.3333328598076" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,70.3333328598076"
+                    Point2="0,74.3333328598076"
+                    Point3="4,74.3333328598076" />
+                  <mssgle:LineSegment
+                    End="177.5,74.3333328598076" />
+                  <mssgle:CubicBezierSegment
+                    Point1="177.5,74.3333328598076"
+                    Point2="181.5,74.3333328598076"
+                    Point3="181.5,78.3333328598076" />
+                  <mssgle:LineSegment
+                    End="181.5,141.166665719615" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="80.121640625,79.3333328598076,21.25671875,9.421875"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\XML Data Flow Task\OLE DB Destination 3">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\XML Data Flow Task\OLE DB Destination 2">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\XML Data Flow Task\OLE DB Destination 4">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\XML Data Flow Task\OLE DB Destination 5">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\XML Data Flow Task\OLE DB Destination 1">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\XML Data Flow Task\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

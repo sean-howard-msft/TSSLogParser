@@ -2,11 +2,13 @@
 AS 
 
 SELECT 
+	AppService, 
 	LogName, 
 	ProviderName, 
 	LevelDisplayName,
 	MachineName,
 	TruncatedMessage,
+	Id,
 	MAX([Message]) FullMessage, 
 	MAX(MsftDocsSearch) MsftDocsSearch, 
 	MAX(MsftDocsTopResult) MsftDocsTopResult, 
@@ -20,11 +22,13 @@ SELECT
 	InstanceNum,
 	Domain,
 	COUNT(*) AS MessageCount
-FROM EventLogsFresh
+FROM dbo.EventLogsFresh
 GROUP BY 
+	AppService, 
 	LogName, 
 	ProviderName, 
 	TruncatedMessage, 
+	Id,
 	LevelDisplayName,
 	MachineName,
 	CountryCode,

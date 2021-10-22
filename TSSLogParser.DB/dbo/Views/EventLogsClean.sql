@@ -19,7 +19,8 @@ SELECT
 	MsftDocsSearch, 
 	MsftDocsTopResult, 
 	WebSearch, 
-	WebTopResult
+	WebTopResult,
+	AppService
 FROM  dbo.EventLogs
 WHERE ([Message] IS NOT NULL) AND 
 	  ([Message] <> '')

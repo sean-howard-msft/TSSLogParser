@@ -8,10 +8,12 @@ namespace TSSLogParser.EFCore
 {
     public partial class RegionalTotal
     {
+        public string AppService { get; set; }
         public string LogName { get; set; }
         public string ProviderName { get; set; }
         public string TruncatedMessage { get; set; }
         public string LevelDisplayName { get; set; }
+        public int? Id { get; set; }
         public string CountryCode { get; set; }
         public string Region { get; set; }
         public string AppCode { get; set; }

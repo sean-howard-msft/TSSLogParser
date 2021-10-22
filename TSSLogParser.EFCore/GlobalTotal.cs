@@ -8,9 +8,11 @@ namespace TSSLogParser.EFCore
 {
     public partial class GlobalTotal
     {
+        public string AppService { get; set; }
         public string LogName { get; set; }
         public string ProviderName { get; set; }
         public string LevelDisplayName { get; set; }
+        public int? Id { get; set; }
         public string TruncatedMessage { get; set; }
         public int? MachineCount { get; set; }
         public int? MessageCount { get; set; }

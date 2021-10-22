@@ -23,5 +23,6 @@ namespace TSSLogParser.EFCore
         public string MsftDocsTopResult { get; set; }
         public string WebSearch { get; set; }
         public string WebTopResult { get; set; }
+        public string AppService { get; set; }
     }
 }

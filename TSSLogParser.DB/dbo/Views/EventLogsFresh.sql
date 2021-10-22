@@ -1,6 +1,7 @@
 ﻿CREATE VIEW dbo.EventLogsFresh
 AS
 SELECT 
+	el.AppService, 
 	el.RecordId, 
 	el.MachineName, 
 	el.LogName, 
@@ -24,5 +25,5 @@ SELECT
 	machData.InstanceNum,
 	machData.Domain
 FROM  dbo.EventLogsClean el
-	JOIN MachineMetadata machData
+	JOIN dbo.MachineMetadata machData
 		ON machData.MachineName = el.MachineName

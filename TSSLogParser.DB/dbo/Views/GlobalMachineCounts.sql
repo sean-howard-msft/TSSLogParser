@@ -12,7 +12,7 @@ FROM  (
 		ProviderName, 
 		TruncatedMessage, 
 		MachineName
-    FROM EventLogsClean
+    FROM dbo.EventLogsClean
 	) AS el
 GROUP BY 
 	LogName, 

@@ -14,7 +14,31 @@
    "SelectedToBeGenerated": 0,
    "Tables": [
       {
+         "Name": "[dbo].[Data]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Event]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EventData]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[EventLogs]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Provider]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[System]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TimeCreated]",
          "ObjectType": 0
       },
       {
@@ -23,6 +47,10 @@
       },
       {
          "Name": "[dbo].[EventLogsFresh]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[FlatEvent]",
          "ObjectType": 3
       },
       {
@@ -58,11 +86,19 @@
          "ObjectType": 3
       },
       {
+         "Name": "[dbo].[FlatEventImport]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[RecommendationImport]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[RunSSISPkgXMLImport]",
          "ObjectType": 1
       }
    ],
-   "UiHint": "howard.TSSParser.dbo",
+   "UiHint": "HOWARD.TSSParser",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDbContextSplitting": false,
