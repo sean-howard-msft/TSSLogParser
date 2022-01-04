@@ -23,5 +23,3 @@ SELECT
 		ORDER BY el2.MachineName
 		FOR XML PATH('')),2,200000), ',', CHAR(13) + CHAR(10)) AS Machines
 FROM dbo.GlobalMessageCounts mc
-WHERE (MsftDocsTopResult IS NOT NULL) OR
-      (WebTopResult IS NOT NULL)

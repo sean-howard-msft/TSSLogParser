@@ -2,7 +2,7 @@
   "profiles": {
     "TSSLogParser": {
       "commandName": "Project",
-      "commandLineArgs": "report -w -g -c -d \"C:\\Users\\cshoward\\OneDrive - Microsoft\\Desktop\\Dumps\"",
+      "commandLineArgs": "report -w -d \"C:\\Users\\cshoward\\Documents\\CaseBuddy.CaseData\\2107010040000364_Greg\"",
       "sqlDebugging": true
     }
   }
